@@ -1,4 +1,5 @@
 class V1::PostsController < V1::BaseController
+  before_action :auth_user, only: [:create, :update, :destroy]
   before_action :load_post, only: [:update, :show, :destroy]
 
   def index

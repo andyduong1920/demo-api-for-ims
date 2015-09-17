@@ -1,4 +1,6 @@
 class V1::SessionsController < V1::BaseController
+  before_action :auth_user, only: :destroy
+
   def create
     user = User.find_by!(email: session_params[:email])
 
