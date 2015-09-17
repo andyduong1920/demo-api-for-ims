@@ -6,6 +6,8 @@ class V1::BaseController < ApplicationController
       "Please sign in", 
       "Please sign in" 
     ) and return unless current_user
+
+    
   end
 
   def message_success(message, content)

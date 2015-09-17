@@ -10,11 +10,9 @@ class V1::SessionsController < V1::BaseController
     ) and return unless user.valid_password?(session_params[:password])
 
     sign_in(user)
-      
-    render json: message_success(
-      "Sign in successfully",
-      "Sign in successfully"
-    )
+    user.send(:generate_token)
+
+    render json: message_success("Sign in successfully", {api_token: user.api_token})
   end
 
   def destroy
