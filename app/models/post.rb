@@ -1,4 +1,6 @@
 class Post < ActiveRecord::Base
   has_many :comments
-  validates :title, :content, presence: true
+  belongs_to :user
+  
+  validates :user, :title, :content, presence: true
 end
