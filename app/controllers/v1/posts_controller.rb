@@ -3,26 +3,26 @@ class V1::PostsController < V1::BaseController
 
   def index
     @posts = Post.all
-    render json: template_respone(200, "Get list post successfully", @posts)
+    render json: message_success("Get list post successfully", @posts)
   end
 
   def show
-    render json: template_respone(200, "Get post successfully", @post)
+    render json: message_success("Get post successfully", @post)
   end
 
   def create
     @post = Post.create!(post_params)
-    render json: template_respone(200, "Create post successfully", @post)
+    render json: message_success("Create post successfully", @post)
   end
 
   def update
     @post.update_attributes(post_params)
-    render json: template_respone(200, "Update post successfully", @post)
+    render json: message_success("Update post successfully", @post)
   end
 
   def destroy
     @post.destroy
-    render json: template_respone(200, "Destroy post successfully", @post)
+    render json: message_success("Destroy post successfully", @post)
   end
 
   private
@@ -32,13 +32,5 @@ class V1::PostsController < V1::BaseController
 
   def post_params
     params.permit(:title, :content)
-  end
-
-  def template_respone(code, message,result)
-    {
-      code: code,
-      message: message,
-      result: result
-    }
   end
 end
