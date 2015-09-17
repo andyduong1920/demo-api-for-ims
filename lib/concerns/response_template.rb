@@ -12,4 +12,8 @@ module ResponseTemplate
   def self.success(message, content)
     template(200, message, content)
   end
+
+  def self.error(message, content)
+    template(500, message, content)
+  end
 end
