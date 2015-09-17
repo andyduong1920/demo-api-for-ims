@@ -13,7 +13,9 @@ class V1::CommentsController < V1::BaseController
   end
 
   def create
-    @comment = @post.comments.create!(comment_params)
+    @comment = @post.comments.new(comment_params)
+    @comment.user = current_user
+    @comment.save!
     render json: message_success("Create comment successfully", @comment)
   end
 
@@ -37,12 +39,11 @@ class V1::CommentsController < V1::BaseController
   end
 
   def params_post_id?
+    raise ActionController::ParameterMissing.new(["post_id"]) unless params[:post_id].present?
     params[:post_id].present?
   end
 
   def comment_params
-    strong_params = params.permit(:content)
-    strong_params[:user_id] = current_user.id
-    strong_params
+    return permit_params(["content"])
   end
 end

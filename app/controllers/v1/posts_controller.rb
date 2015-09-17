@@ -32,6 +32,6 @@ class V1::PostsController < V1::BaseController
   end
 
   def post_params
-    params.permit(:title, :content)
+    return permit_params(["title", "content"])
   end
 end
