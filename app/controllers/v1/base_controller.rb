@@ -1,5 +1,7 @@
 class V1::BaseController < ApplicationController
   
+  rescue_from ::ActiveRecord::ActiveRecordError, with: :record_exception
+
   def auth_user
     # not login
     render json: message_error(
@@ -32,6 +34,14 @@ class V1::BaseController < ApplicationController
 
   def message_error(message, content)
     ResponseTemplate.error(message, content)
+  end
+
+
+  def record_exception(exception)
+    render json: message_error(
+      exception.message, 
+      (defined? exception.record).present? ?  exception.record.errors.to_hash : exception.message
+    ) and return
   end
 
   private
