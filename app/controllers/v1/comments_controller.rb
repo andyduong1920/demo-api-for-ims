@@ -1,6 +1,6 @@
 class V1::CommentsController < V1::BaseController
+  before_action :auth_user, only: [:create, :update, :destroy]
   before_action :load_comment, only: [:update, :show, :destroy]
-
   before_action :load_post, only: [:create], if: :params_post_id?
 
   def index
