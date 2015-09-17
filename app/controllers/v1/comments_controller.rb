@@ -41,6 +41,8 @@ class V1::CommentsController < V1::BaseController
   end
 
   def comment_params
-    params.permit(:content)
+    strong_params = params.permit(:content)
+    strong_params[:user_id] = current_user.id
+    strong_params
   end
 end
