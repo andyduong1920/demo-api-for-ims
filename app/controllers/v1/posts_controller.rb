@@ -12,7 +12,7 @@ class V1::PostsController < V1::BaseController
   end
 
   def create
-    @post = Post.create!(post_params)
+    @post = current_user.posts.create!(post_params)
     render json: message_success("Create post successfully", @post)
   end
 
