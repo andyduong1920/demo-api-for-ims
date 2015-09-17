@@ -1,6 +1,7 @@
 class V1::BaseController < ApplicationController
   
   rescue_from ::ActiveRecord::ActiveRecordError, with: :record_exception
+  rescue_from ::ActionController::ParameterMissing, with: :params_missing
 
   def auth_user
     # not login
@@ -36,14 +37,6 @@ class V1::BaseController < ApplicationController
     ResponseTemplate.error(message, content)
   end
 
-
-  def record_exception(exception)
-    render json: message_error(
-      exception.message, 
-      (defined? exception.record).present? ?  exception.record.errors.to_hash : exception.message
-    ) and return
-  end
-
   private
   # Check has api-token on header
   def api_token?
@@ -63,5 +56,35 @@ class V1::BaseController < ApplicationController
   # Check token time expired
   def token_expire?
     current_user.expire_at < Time.current.to_i
+  end
+
+  def record_exception(exception)
+    render json: message_error(
+      exception.message, 
+      (defined? exception.record).present? ?  exception.record.errors.to_hash : exception.message
+    ) and return
+  end
+
+  def params_missing(exception)
+    render json: message_error("You missing params", exception.param) and return
+  end
+
+  protected
+  def permit_params(array_permit)
+    params_permited = params_permited(array_permit)
+    raise ActionController::ParameterMissing.new(missing_params(array_permit, params_permited.keys)) unless permit?(params_permited.keys, array_permit)
+    return params_permited
+  end
+
+  def params_permited(array_permit)
+    params.permit(array_permit)
+  end
+
+  def missing_params(array_require, array_permited)
+    array_require - array_permited
+  end
+
+  def permit?(array_require, array_permited)
+    array_require == array_permited
   end
 end
