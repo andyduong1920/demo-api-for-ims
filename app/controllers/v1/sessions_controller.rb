@@ -2,6 +2,11 @@ class V1::SessionsController < V1::BaseController
   before_action :auth_user, only: :destroy
 
   def create
+    render json: message_success(
+      "You are login", 
+      {api_token: current_user.api_token}
+    ) and return if current_user
+
     user = User.find_by!(email: session_params[:email])
 
     render json: message_error(
