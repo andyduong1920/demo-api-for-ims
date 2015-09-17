@@ -12,17 +12,17 @@ class V1::PostsController < V1::BaseController
 
   def create
     @post = Post.create!(post_params)
-    render template_respone(200, "Create post successfully", @post)
+    render json: template_respone(200, "Create post successfully", @post)
   end
 
   def update
     @post.update_attributes(post_params)
-    render template_respone(200, "Update post successfully", @post)
+    render json: template_respone(200, "Update post successfully", @post)
   end
 
   def destroy
     @post.destroy
-    render template_respone(200, "Destroy post successfully", @post)
+    render json: template_respone(200, "Destroy post successfully", @post)
   end
 
   private
