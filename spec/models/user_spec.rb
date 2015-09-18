@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe User do
+	before do
+		@error_blank_field = "can't be blank"
+	end
+	
 	it "is valid with email and password" do
 		user = User.new(email: "foo@bar.com", password: "1234567890")
 		expect(user).to be_valid
@@ -9,20 +13,20 @@ describe User do
 	it "is invalid without email" do
 		user = User.new(email: nil)
 		user.valid?
-		expect(user.errors[:email]).to include("can't be blank")
+		expect(user.errors[:email]).to include @error_blank_field
 	end
 
 	it "is invalid without password" do
 		user = User.new(password: nil)
 		user.valid?
-		expect(user.errors[:password]).to include("can't be blank")
+		expect(user.errors[:password]).to include @error_blank_field
 	end
 
 	it "is invalid without email and password" do
 		user = User.new(email: nil, password: nil)
 		user.valid?
-		expect(user.errors[:email]).to include("can't be blank")
-		expect(user.errors[:password]).to include("can't be blank")
+		expect(user.errors[:email]).to include @error_blank_field
+		expect(user.errors[:password]).to include @error_blank_field
 	end
 
 	it "is invalid with wrong email (foobar.com)" do
@@ -73,7 +77,7 @@ describe User do
 	it "is invalid with blank password" do
 		user = User.new(email: "foo@bar.com", password: "")
 		user.valid?
-		expect(user.errors[:password]).to include("can't be blank")
+		expect(user.errors[:password]).to include @error_blank_field
 	end
 
 	it "is invalid with too short password" do
