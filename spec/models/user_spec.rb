@@ -3,85 +3,88 @@ require 'rails_helper'
 describe User do
 	before do
 		@error_blank_field = "can't be blank"
+		@error_invalid = "is invalid"
 	end
-	
+
 	it "is valid with email and password" do
-		user = User.new(email: "foo@bar.com", password: "1234567890")
+		user = build(:user)
 		expect(user).to be_valid
 	end
 
 	it "is invalid without email" do
-		user = User.new(email: nil)
+		user = build(:user, email: nil)
 		user.valid?
 		expect(user.errors[:email]).to include @error_blank_field
 	end
 
 	it "is invalid without password" do
-		user = User.new(password: nil)
+		user = build(:user, password: nil)
 		user.valid?
 		expect(user.errors[:password]).to include @error_blank_field
 	end
 
 	it "is invalid without email and password" do
-		user = User.new(email: nil, password: nil)
+		user = build(:user, email: nil, password: nil)
 		user.valid?
 		expect(user.errors[:email]).to include @error_blank_field
 		expect(user.errors[:password]).to include @error_blank_field
 	end
 
 	it "is invalid with wrong email (foobar.com)" do
-		user = User.new(email: "foobar.com", password: "1234567890")
+		user = build(:user, email: "foobar.com")
 		user.valid?
-		expect(user.errors[:email]).to include("is invalid")
+		expect(user.errors[:email]).to include @error_invalid
 	end
 
 	it "is invalid with wrong email (foo@bar.)" do
-		user = User.new(email: "foo@bar.", password: "1234567890")
+		user = build(:user, email: "foo@bar.")
 		user.valid?
-		expect(user.errors[:email]).to include("is invalid")
+		expect(user.errors[:email]).to include @error_invalid
 	end
 
 	it "is invalid with wrong email (foo@bar.1)" do
-		user = User.new(email: "foo@bar.1", password: "1234567890")
+		user = build(:user, email: "foo@bar.1")
 		user.valid?
-		expect(user.errors[:email]).to include("is invalid")
+		expect(user.errors[:email]).to include @error_invalid
 	end
 
 	it "is invalid with wrong email (foo@bar..com)" do
-		user = User.new(email: "foo@bar..com", password: "1234567890")
+		user = build(:user, email: "foo@bar..com")
 		user.valid?
-		expect(user.errors[:email]).to include("is invalid")
+		expect(user.errors[:email]).to include @error_invalid
 	end
 
 	it "is invalid with wrong email (more than 255 characters)" do
 		too_long_name = "a" * 256
-		user = User.new(email: "#{too_long_name}@bar..com", password: "1234567890")
+		user = build(:user, email: "#{too_long_name}@bar..com")
 		user.valid?
-		expect(user.errors[:email]).to include("is invalid")
+		expect(user.errors[:email]).to include @error_invalid
 	end
 
 	it "is invalid with blank email" do
-		user = User.new(email: "", password: "1234567890")
+		user = build(:user, email: "")
 		user.valid?
-		expect(user.errors[:email]).to include("is invalid")
+		expect(user.errors[:email]).to include @error_invalid
 	end
 
 	it "is invalid with a duplicate password" do
 		email = "foo.duplicate1@bar.com"
-		User.create!(email: email, password: "1234567890")
-		user = User.new(email: email, password: "1234567890")
-		user.valid?
-		expect(user.errors[:email]).to include("has already been taken")
+		first_user = build(:user, email: email)
+		first_user.save!
+
+		second_user = build(:user, email: email)
+		second_user.valid?
+		expect(second_user.errors[:email]).to include("has already been taken")
 	end
 
 	it "is invalid with blank password" do
-		user = User.new(email: "foo@bar.com", password: "")
+		user = build(:user, password: "")
 		user.valid?
 		expect(user.errors[:password]).to include @error_blank_field
 	end
 
 	it "is invalid with too short password" do
-		user = User.new(email: "foo@bar.com", password: "123")
+		user = build(:user, password: "123")
 		user.valid?
 		expect(user.errors[:password]).to include("is too short (minimum is 8 characters)")
 	end
