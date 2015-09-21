@@ -1,0 +1,10 @@
+1. is valid with email and password
+2. is invalid without email
+3. is invalid without password
+4. is invalid without email and password
+5. is invalid with wrong email (many cases)
+6. is invalid with blank email
+7. is invalid with a duplicate email
+8. is invalid with blank password
+9. is invalid with too short password
+10. (Consider expire_time)

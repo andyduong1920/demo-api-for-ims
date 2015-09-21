@@ -1,0 +1,9 @@
+1. is valid with content and associstion for post and user
+2. is invalid without content
+3. is invalid without post
+4. is invalid without user
+5. is invalid with blank content
+6. is invalid with blank post_id
+7. is invalid with wrong post_id
+8. is invalid with blank user_id
+9. is invalid with wrong user_id

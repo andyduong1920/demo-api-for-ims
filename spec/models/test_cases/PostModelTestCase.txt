@@ -1,0 +1,8 @@
+1. is valid with title and content
+2. is invalid without title
+3. is invalid without content
+4. is invalid without user
+5. is invalid with blank title
+6. is invalid with blank content
+7. is invalid with blank user_id
+8. is invalid with wrong user_id
