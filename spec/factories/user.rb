@@ -1,6 +1,10 @@
 FactoryGirl.define do
 	factory :user do
-    email { Faker::Internet.email }
-		password { Faker::Internet.password(8) }
+    email { FFaker::Internet.email }
+		password { FFaker::Internet.password(8) }
+
+		# after(:build) do |user|
+		# 	user.posts << FactoryGirl.build(:post, user: user)
+		# end
 	end	
 end

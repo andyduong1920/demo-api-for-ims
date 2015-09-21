@@ -68,7 +68,8 @@ describe User do
 	end
 
 	it "is invalid with a duplicate password" do
-		email = "foo.duplicate1@bar.com"
+		timestamp = Time.now.to_i
+		email = "foo.duplicate#{timestamp}@bar.com"
 		first_user = build(:user, email: email)
 		first_user.save!
 
@@ -88,5 +89,4 @@ describe User do
 		user.valid?
 		expect(user.errors[:password]).to include("is too short (minimum is 8 characters)")
 	end
-	
 end
