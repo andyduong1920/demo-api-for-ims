@@ -5,7 +5,7 @@ describe Post do
 		@error_blank_field = "can't be blank"
 	end
 
-	it "is valid with title and content" do
+	it "is valid with title, content and associstion for user" do
 		expect(build(:post)).to be_valid
 	end
 

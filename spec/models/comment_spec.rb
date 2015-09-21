@@ -5,7 +5,7 @@ describe Comment do
 		@error_blank_field = "can't be blank"
 	end
 
-	it "is valid with content" do
+	it "is valid with content and associstion for post and user" do
 		expect(build(:comment)).to be_valid
 	end
 
